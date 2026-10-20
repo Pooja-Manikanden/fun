@@ -1,0 +1,9 @@
+<!ELEMENT studman (student+)>
+<!ELEMENT student (rollno , name , year , email , marks)>
+<!ATTLIST student
+id CDATA #REQUIRED>
+<!ELEMENT rollno (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT year (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT marks (#PCDATA)>

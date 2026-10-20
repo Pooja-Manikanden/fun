@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="student.xsl"?>
+<!DOCTYPE studman SYSTEM "student.dtd">
+<studman>
+    <student id="1">
+        <rollno>1</rollno>
+        <name>stud1</name>
+        <year>3</year>
+        <email>stud1@gmail.com</email>
+        <marks>8.89</marks>
+    </student>
+
+    <student id="2">
+        <rollno>2</rollno>
+        <name>stud2</name>
+        <year>2</year>
+        <email>stud2@gmail.com</email>
+        <marks>8.99</marks>
+    </student>
+
+    <student id="3">
+        <rollno>3</rollno>
+        <name>stud3</name>
+        <year>4</year>
+        <email>stud3@gmail.com</email>
+        <marks>9.3</marks>
+    </student>
+</studman>

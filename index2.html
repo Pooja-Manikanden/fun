@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Library Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+    <div ng-controller="Controller1">
+        <h2>Library Management</h2>
+
+        <input type="text" ng-model="bookname" placeholder="Enter the Book">
+        <input type="number" ng-model="quantity" placeholder="Quantity">
+
+        <button ng-click="addBook()">Add</button>
+    </div>
+
+    <div ng-controller="Controller2">
+        <h3>Book List</h3>
+
+        <ul>
+            <li ng-repeat="book in books">
+                Book Name: {{book.bookname}},
+                Quantity: {{book.quantity}}
+
+                <button ng-click="deleteBook(book._id)">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        var app = angular.module("myApp", []);
+
+        // Factory code
+        app.factory("LibraryService", function($http) {
+            var api = "http://localhost:3000/books";
+
+            return {
+                getBooks: function() {
+                    return $http.get(api);
+                },
+
+                addBooks: function(book) {
+                    return $http.post(api, book);
+                },
+
+                deleteBook: function(id) {
+                    return $http.delete(api + "/" + id);
+                }
+            };
+        });
+
+        // Controller 1 - Add books
+        app.controller("Controller1", function($scope, $rootScope, LibraryService) {
+            $scope.addBook = function() {
+                var book = {
+                    bookname: $scope.bookname,
+                    quantity: $scope.quantity
+                };
+
+                LibraryService.addBooks(book)
+                    .then(function(response) {
+                        alert("Book added successfully");
+
+                        $scope.bookname = "";
+                        $scope.quantity = "";
+
+                        $rootScope.$broadcast("Booksupdated");
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        alert("Could not add book");
+                    });
+            };
+        });
+
+        // Controller 2 - Display and delete books
+        app.controller("Controller2", function($scope, LibraryService) {
+            $scope.books = [];
+
+            $scope.loadBooks = function() {
+                LibraryService.getBooks()
+                    .then(function(response) {
+                        $scope.books = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            };
+
+            $scope.deleteBook = function(id) {
+                LibraryService.deleteBook(id)
+                    .then(function() {
+                        alert("Deleted successfully");
+                        $scope.loadBooks();
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        alert("Could not delete book");
+                    });
+            };
+
+            $scope.$on("Booksupdated", function() {
+                $scope.loadBooks();
+            });
+
+            $scope.loadBooks();
+        });
+    </script>
+
+</body>
+</html>
